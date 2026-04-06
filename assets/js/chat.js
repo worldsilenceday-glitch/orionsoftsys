@@ -42,11 +42,13 @@
       const messagesEl = document.getElementById("chatMessages");
       if (!messagesEl) return;
 
+      // Always show a welcome message, regardless of auth state
       const token = this.getToken();
       if (token) {
         this.appendMessage("bot", "Hello! I'm your Orion AI Assistant. How can I help you today?");
+      } else {
+        this.appendMessage("bot", "Hi! I'm the Orion AI Assistant. How can I help you today? Sign in to save your conversations and unlock unlimited features.");
       }
-      // If no token, don't show message - guest mode handled by landing pages
     },
 
     bindEvents() {

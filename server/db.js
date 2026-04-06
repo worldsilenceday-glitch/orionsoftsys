@@ -18,7 +18,8 @@ async function initDB() {
     await pool.query(schema);
     console.log("✅ Database tables initialized");
   } catch (err) {
-    console.error("❌ DB initialization error:", err.message);
+    console.error("FATAL: DB initialization failed:", err.message);
+    process.exit(1);
   }
 }
 

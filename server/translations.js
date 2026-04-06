@@ -136,12 +136,32 @@ const translations = {
   "chat.send": { en: "Send", fr: "Envoyer", es: "Enviar", ha: "Aika", yo: "Fi ranṣẹ́" },
 
   // ==================== LANGUAGES (in dropdown) ====================
-  "lang.english": { en: "English", fr: "Anglais", es: "Inglés", ha: "Turanci", yo: "Gẹ̀ẹ́sì" },
-  "lang.french": { en: "French", fr: "Français", es: "Francés", ha: "Faransanci", yo: "Faransé" },
-  "lang.spanish": { en: "Spanish", fr: "Espagnol", es: "Español", ha: "Spaniyanci", yo: "Sípáníìṣì" },
-  "lang.hausa": { en: "Hausa", fr: "Haoussa", es: "Hausa", ha: "Hausa", yo: "Hausa" },
-  "lang.yoruba": { en: "Yoruba", fr: "Yoruba", es: "Yoruba", ha: "Yarbanci", yo: "Yorùbá" },
-  "lang.german": { en: "German", fr: "Allemand", es: "Alemán", ha: "Jamusanci", yo: "Jámánì" },
+  "lang.english": { en: "English", fr: "Anglais", es: "Inglés", ha: "Turanci", yo: "Gẹ̀ẹ́sì", de: "Englisch" },
+  "lang.french": { en: "French", fr: "Français", es: "Francés", ha: "Faransanci", yo: "Faransé", de: "Französisch" },
+  "lang.spanish": { en: "Spanish", fr: "Espagnol", es: "Español", ha: "Spaniyanci", yo: "Sípáníìṣì", de: "Spanisch" },
+  "lang.hausa": { en: "Hausa", fr: "Haoussa", es: "Hausa", ha: "Hausa", yo: "Hausa", de: "Haussa" },
+  "lang.yoruba": { en: "Yoruba", fr: "Yoruba", es: "Yoruba", ha: "Yarbanci", yo: "Yorùbá", de: "Yoruba" },
+  "lang.german": { en: "German", fr: "Allemand", es: "Alemán", ha: "Jamusanci", yo: "Jámánì", de: "Deutsch" },
+
+  // ==================== LOGIN / REGISTER ====================
+  "login.title": { en: "Welcome Back", fr: "Bienvenue", es: "Bienvenido", ha: "Barka da komawa", yo: "Káàbọ̀ Padà", de: "Willkommen zurück" },
+  "login.subtitle": { en: "Sign in to access your AI assistant", fr: "Connectez-vous pour accéder à votre assistant IA", es: "Inicie sesión para acceder a su asistente de IA", ha: "Shiga don samun AI assistant ɗinku", yo: "Wọlé láti wọlé sí AI assistant rẹ", de: "Melden Sie sich an, um auf Ihren KI-Assistenten zuzugreifen" },
+  "login.email": { en: "Email Address", fr: "Adresse email", es: "Correo electrónico", ha: "Adireshin imel", yo: "Adirẹ́ẹ̀sì Ímeèlì", de: "E-Mail-Adresse" },
+  "login.password": { en: "Password", fr: "Mot de passe", es: "Contraseña", ha: "Kalmar sirri", yo: "Ọ̀rọ̀ Aṣínà", de: "Passwort" },
+  "login.button": { en: "Sign In", fr: "Connexion", es: "Iniciar sesión", ha: "Shiga", yo: "Wọlé", de: "Anmelden" },
+  "login.no_account": { en: "Don't have an account?", fr: "Pas de compte ?", es: "¿No tienes cuenta?", ha: "Ba ku da asusu?", yo: "Kò ní àkọọ́lẹ̀?", de: "Noch kein Konto?" },
+  "login.create": { en: "Create one free", fr: "Créez-en un gratuit", es: "Crea uno gratis", ha: "Ƙirƙiri kyauta", yo: "Ṣẹ̀dá ọ̀fẹ́ kan", de: "Kostenlos erstellen" },
+  "login.back_home": { en: "Back to Home", fr: "Retour à l'accueil", es: "Volver al inicio", ha: "Komawa gida", yo: "Padà sí Ilé", de: "Zurück zur Startseite" },
+  "register.title": { en: "Create Your Account", fr: "Créez votre compte", es: "Crea tu cuenta", ha: "Ƙirƙiri asusunku", yo: "Ṣẹ̀dá Àkọọ́lẹ̀ Rẹ", de: "Erstellen Sie Ihr Konto" },
+  "register.subtitle": { en: "Start building AI-powered systems today", fr: "Commencez à créer des systèmes alimentés par l'IA aujourd'hui", es: "Comienza a crear sistemas con IA hoy", ha: "Fara gina tsarin AI yau", yo: "Bẹ̀rẹ̀ ṣíṣe ètò pẹ̀lú AI lónìí", de: "Erstellen Sie noch heute KI-gestützte Systeme" },
+  "register.trial": { en: "14-Day Free Trial", fr: "Essai gratuit de 14 jours", es: "Prueba gratuita de 14 días", ha: "Gwaji kyauta na kwanaki 14", yo: "Ìdánwọ̀ Ọ̀fẹ́ Ọjọ́ 14", de: "14-Tage kostenlose Testversion" },
+  "register.name": { en: "Full Name", fr: "Nom complet", es: "Nombre completo", ha: "Cikakken suna", yo: "Orúkọ Kíkún", de: "Vollständiger Name" },
+  "register.phone": { en: "Phone (optional)", fr: "Téléphone (facultatif)", es: "Teléfono (opcional)", ha: "Wayar (zaɓi)", yo: "Fóònù (yíyàn)", de: "Telefon (optional)" },
+  "register.email": { en: "Email Address", fr: "Adresse email", es: "Correo electrónico", ha: "Adireshin imel", yo: "Adirẹ́ẹ̀sì Ímeèlì", de: "E-Mail-Adresse" },
+  "register.business": { en: "Business Type", fr: "Type d'entreprise", es: "Tipo de negocio", ha: "Nau'in kasuwanci", yo: "Iru Iṣẹ́", de: "Unternehmenstyp" },
+  "register.password": { en: "Password", fr: "Mot de passe", es: "Contraseña", ha: "Kalmar sirri", yo: "Ọ̀rọ̀ Aṣínà", de: "Passwort" },
+  "register.button": { en: "Create Account", fr: "Créer un compte", es: "Crear cuenta", ha: "Ƙirƙiri asusu", yo: "Ṣẹ̀dá Àkọọ́lẹ̀", de: "Konto erstellen" },
+  "register.has_account": { en: "Already have an account?", fr: "Déjà un compte ?", es: "¿Ya tienes cuenta?", ha: "Kuna da asusu?", yo: "Ní àkọọ́lẹ̀ tẹ́lẹ̀?", de: "Bereits ein Konto?" },
 
   // ==================== FAQ ====================
   "faq.q1": { en: "How quickly can you start my project?", fr: "À quelle vitesse pouvez-vous démarrer mon projet ?", es: "¿Qué tan rápido pueden iniciar mi proyecto?", ha: "Da wane sauri zaku iya fara aikina?", yo: "Báwo ni ìyára wo ni ẹ̀yin lè bẹ̀rẹ̀ iṣẹ́ mi?" },

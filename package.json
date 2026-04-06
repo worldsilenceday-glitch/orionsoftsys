@@ -20,7 +20,8 @@
     "axios": "^1.6.2",
     "helmet": "^7.1.0",
     "express-validator": "^7.0.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "stripe": "^14.10.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"

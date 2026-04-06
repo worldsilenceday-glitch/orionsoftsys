@@ -22,14 +22,6 @@ exports.errorHandler = (err, req, res, next) => {
     return res.status(400).json({ error: "Invalid data value", code: "CHECK_VIOLATION" });
   }
 
-  // Express validator errors
-  if (err.array && typeof err.array === "function") {
-    const errors = err.array();
-    if (errors.length > 0) {
-      return res.status(400).json({ error: errors[0].msg, code: "VALIDATION_ERROR" });
-    }
-  }
-
   // JWT errors
   if (err.name === "JsonWebTokenError") {
     return res.status(401).json({ error: "Invalid token", code: "INVALID_TOKEN" });

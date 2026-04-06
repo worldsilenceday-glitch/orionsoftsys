@@ -79,31 +79,42 @@
   <div class="auth-page">
     <div class="auth-card">
       <a href="index.html" class="back-link">&larr; Back to Home</a>
-      <div class="trial-badge-wrap">
-        <span class="trial-badge">14-Day Free Trial</span>
+      <div class="lang-switcher" style="position:static;">
+        <button class="lang-switcher-btn" id="langSwitcherBtn" aria-label="Switch language">EN</button>
+        <div class="lang-dropdown" id="langDropdown">
+          <button class="lang-option" data-lang="en" data-i18n-text="lang.english">English</button>
+          <button class="lang-option" data-lang="fr" data-i18n-text="lang.french">Français</button>
+          <button class="lang-option" data-lang="es" data-i18n-text="lang.spanish">Español</button>
+          <button class="lang-option" data-lang="ha" data-i18n-text="lang.hausa">Hausa</button>
+          <button class="lang-option" data-lang="yo" data-i18n-text="lang.yoruba">Yorùbá</button>
+          <button class="lang-option" data-lang="de" data-i18n-text="lang.german">Deutsch</button>
+        </div>
       </div>
-      <h1>Create Your Account</h1>
-      <p class="subtitle">Start building AI-powered systems today</p>
+      <div class="trial-badge-wrap">
+        <span class="trial-badge" data-i18n-text="register.trial">14-Day Free Trial</span>
+      </div>
+      <h1 data-i18n-text="register.title">Create Your Account</h1>
+      <p class="subtitle" data-i18n-text="register.subtitle">Start building AI-powered systems today</p>
 
       <div class="auth-error" id="authError"></div>
 
       <form id="registerForm" novalidate>
         <div class="form-row">
           <div class="form-group">
-            <label for="regName">Full Name</label>
-            <input type="text" id="regName" name="name" class="form-control" placeholder="John Doe" required>
+            <label for="regName" data-i18n-text="register.name">Full Name</label>
+            <input type="text" id="regName" name="name" class="form-control" placeholder="John Doe" data-i18n-placeholder="register.name" required>
           </div>
           <div class="form-group">
-            <label for="regPhone">Phone (optional)</label>
-            <input type="tel" id="regPhone" name="phone" class="form-control" placeholder="+234...">
+            <label for="regPhone" data-i18n-text="register.phone">Phone (optional)</label>
+            <input type="tel" id="regPhone" name="phone" class="form-control" placeholder="+234..." data-i18n-placeholder="register.phone">
           </div>
         </div>
         <div class="form-group">
-          <label for="regEmail">Email Address</label>
-          <input type="email" id="regEmail" name="email" class="form-control" placeholder="you@company.com" required autocomplete="email">
+          <label for="regEmail" data-i18n-text="register.email">Email Address</label>
+          <input type="email" id="regEmail" name="email" class="form-control" placeholder="you@company.com" data-i18n-placeholder="register.email" required autocomplete="email">
         </div>
         <div class="form-group">
-          <label for="regBusiness">Business Type</label>
+          <label for="regBusiness" data-i18n-text="register.business">Business Type</label>
           <select id="regBusiness" name="businessType" class="form-control">
             <option value="small-business">Small Business</option>
             <option value="education">Education</option>
@@ -116,19 +127,24 @@
           </select>
         </div>
         <div class="form-group">
-          <label for="regPassword">Password</label>
+          <label for="regPassword" data-i18n-text="register.password">Password</label>
           <div class="password-field">
-            <input type="password" id="regPassword" name="password" class="form-control" placeholder="Min. 6 characters" required minlength="6" autocomplete="new-password">
+            <input type="password" id="regPassword" name="password" class="form-control" placeholder="Min. 6 characters" data-i18n-placeholder="register.password" required minlength="6" autocomplete="new-password">
             <button type="button" class="password-toggle" onclick="togglePassword('regPassword', this)">Show</button>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary" style="width:100%;" id="regBtn">Create Account</button>
+        <button type="submit" class="btn btn-primary" style="width:100%;" id="regBtn" data-i18n-text="register.button">Create Account</button>
       </form>
 
       <div class="auth-footer">
-        Already have an account? <a href="login.html">Sign in</a>
+        <span data-i18n-text="register.has_account">Already have an account?</span> <a href="login.html" data-i18n-text="login.back_home">Sign in</a>
       </div>
     </div>
+  </div>
+
+  <!-- Sticky CTA -->
+  <div class="sticky-cta">
+    <a href="login.html" class="btn btn-primary">Get Started Free</a>
   </div>
 
   <script>
@@ -198,5 +214,6 @@
       window.location.href = "dashboard.html";
     }
   </script>
+  <script src="assets/js/translations.js"></script>
 </body>
 </html>

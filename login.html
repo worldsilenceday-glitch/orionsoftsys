@@ -97,32 +97,48 @@
 
   <div class="auth-page">
     <div class="auth-card">
-      <a href="index.html" class="back-link">&larr; Back to Home</a>
-      <h1>Welcome Back</h1>
-      <p class="subtitle">Sign in to access your AI assistant</p>
+      <a href="index.html" class="back-link" data-i18n-text="login.back_home">&larr; Back to Home</a>
+      <div class="lang-switcher" style="position:static;">
+        <button class="lang-switcher-btn" id="langSwitcherBtn" aria-label="Switch language">EN</button>
+        <div class="lang-dropdown" id="langDropdown">
+          <button class="lang-option" data-lang="en" data-i18n-text="lang.english">English</button>
+          <button class="lang-option" data-lang="fr" data-i18n-text="lang.french">Français</button>
+          <button class="lang-option" data-lang="es" data-i18n-text="lang.spanish">Español</button>
+          <button class="lang-option" data-lang="ha" data-i18n-text="lang.hausa">Hausa</button>
+          <button class="lang-option" data-lang="yo" data-i18n-text="lang.yoruba">Yorùbá</button>
+          <button class="lang-option" data-lang="de" data-i18n-text="lang.german">Deutsch</button>
+        </div>
+      </div>
+      <h1 data-i18n-text="login.title">Welcome Back</h1>
+      <p class="subtitle" data-i18n-text="login.subtitle">Sign in to access your AI assistant</p>
 
       <div class="auth-error" id="authError"></div>
       <div class="auth-success" id="authSuccess"></div>
 
       <form id="loginForm" novalidate>
         <div class="form-group">
-          <label for="loginEmail">Email Address</label>
-          <input type="email" id="loginEmail" name="email" class="form-control" placeholder="you@company.com" required autocomplete="email">
+          <label for="loginEmail" data-i18n-text="login.email">Email Address</label>
+          <input type="email" id="loginEmail" name="email" class="form-control" placeholder="you@company.com" data-i18n-placeholder="login.email" required autocomplete="email">
         </div>
         <div class="form-group">
-          <label for="loginPassword">Password</label>
+          <label for="loginPassword" data-i18n-text="login.password">Password</label>
           <div class="password-field">
-            <input type="password" id="loginPassword" name="password" class="form-control" placeholder="Enter your password" required autocomplete="current-password">
+            <input type="password" id="loginPassword" name="password" class="form-control" placeholder="Enter your password" data-i18n-placeholder="login.password" required autocomplete="current-password">
             <button type="button" class="password-toggle" onclick="togglePassword('loginPassword', this)">Show</button>
           </div>
         </div>
-        <button type="submit" class="btn btn-primary" style="width:100%;" id="loginBtn">Sign In</button>
+        <button type="submit" class="btn btn-primary" style="width:100%;" id="loginBtn" data-i18n-text="login.button">Sign In</button>
       </form>
 
       <div class="auth-footer">
-        Don't have an account? <a href="register.html">Create one free</a>
+        <span data-i18n-text="login.no_account">Don't have an account?</span> <a href="register.html" data-i18n-text="login.create">Create one free</a>
       </div>
     </div>
+  </div>
+
+  <!-- Sticky CTA -->
+  <div class="sticky-cta">
+    <a href="login.html" class="btn btn-primary">Get Started Free</a>
   </div>
 
   <script>
@@ -203,5 +219,6 @@
       window.location.href = "dashboard.html";
     }
   </script>
+  <script src="assets/js/translations.js"></script>
 </body>
 </html>

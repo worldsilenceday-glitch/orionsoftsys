@@ -28,26 +28,29 @@
     <div class="container">
       <a href="index.html" class="navbar-brand"><span class="logo-icon" aria-hidden="true"></span> Orion Soft Systems</a>
       <div class="navbar-menu">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="services/index.html">Services</a>
-        <a href="products/orion-ai-assistant.html">Products</a>
-        <a href="pricing.html">Pricing</a>
-        <a href="projects.html">Projects</a>
-        <a href="download.html">Download</a>
-        <a href="contact.html" class="active">Contact</a>
+        <a href="index.html" data-i18n-text="nav.home">Home</a>
+        <a href="about.html" data-i18n-text="nav.about">About</a>
+        <a href="services/index.html" data-i18n-text="nav.services">Services</a>
+        <a href="products/orion-ai-assistant.html" data-i18n-text="nav.products">Products</a>
+        <a href="pricing.html" data-i18n-text="nav.pricing">Pricing</a>
+        <a href="projects.html" data-i18n-text="nav.projects">Projects</a>
+        <a href="download.html" data-i18n-text="nav.download">Download</a>
+        <a href="contact.html" class="active" data-i18n-text="nav.contact">Contact</a>
+        <span id="authNavLinks"></span>
         <div class="lang-switcher">
-          <button class="lang-switcher-btn" id="langSwitcherBtn">EN</button>
+          <button class="lang-switcher-btn" id="langSwitcherBtn" aria-label="Switch language">EN</button>
           <div class="lang-dropdown" id="langDropdown">
-            <button class="lang-option" data-lang="en">English</button>
-            <button class="lang-option" data-lang="fr">Français</button>
-            <button class="lang-option" data-lang="es">Español</button>
-            <button class="lang-option" data-lang="de">Deutsch</button>
+            <button class="lang-option" data-lang="en" data-i18n-text="lang.english">English</button>
+            <button class="lang-option" data-lang="fr" data-i18n-text="lang.french">Français</button>
+            <button class="lang-option" data-lang="es" data-i18n-text="lang.spanish">Español</button>
+            <button class="lang-option" data-lang="ha" data-i18n-text="lang.hausa">Hausa</button>
+            <button class="lang-option" data-lang="yo" data-i18n-text="lang.yoruba">Yorùbá</button>
+            <button class="lang-option" data-lang="de" data-i18n-text="lang.german">Deutsch</button>
           </div>
         </div>
-        <a href="contact.html" class="btn btn-primary">Book a Demo</a>
+        <span id="authCta"></span>
       </div>
-      <button class="mobile-toggle"><span></span><span></span><span></span></button>
+      <button class="mobile-toggle" aria-label="Toggle navigation menu"><span></span><span></span><span></span></button>
     </div>
   </nav>
 
@@ -245,36 +248,45 @@
     </section>
   </main>
 
+  <!-- Sticky CTA -->
+  <div class="sticky-cta">
+    <a href="login.html" class="btn btn-primary">Get Started Free</a>
+  </div>
+
   <!-- ==================== FOOTER ==================== -->
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
         <div class="footer-brand">
-          <a href="index.html" class="navbar-brand"><span class="logo-icon"></span> Orion Soft Systems</a>
-          <p>Building Intelligent Systems for a Smarter Future.</p>
+          <a href="index.html" class="navbar-brand">
+            <span class="logo-icon" aria-hidden="true"></span> Orion Soft Systems
+          </a>
+          <p data-i18n="footer.company">Building Intelligent Systems for a Smarter Future.</p>
         </div>
         <div class="footer-links">
-          <h5>Quick Links</h5>
-          <a href="about.html">About Us</a>
-          <a href="projects.html">Projects</a>
-          <a href="pricing.html">Pricing</a>
-          <a href="download.html">Download MIC</a>
-          <a href="contact.html">Contact</a>
+          <h5 data-i18n-text="footer.quick">Quick Links</h5>
+          <a href="about.html" data-i18n-text="nav.about">About Us</a>
+          <a href="projects.html" data-i18n-text="nav.projects">Projects</a>
+          <a href="pricing.html" data-i18n-text="nav.pricing">Pricing</a>
+          <a href="download.html" data-i18n-text="nav.download">Download MIC</a>
+          <a href="contact.html" data-i18n-text="nav.contact">Contact</a>
         </div>
         <div class="footer-links">
-          <h5>Services</h5>
-          <a href="services/web-development.html">Web Development</a>
-          <a href="services/ai-solutions.html">AI Solutions</a>
-          <a href="services/automation.html">Automation</a>
-          <a href="services/custom-software.html">Custom Software</a>
+          <h5 data-i18n-text="footer.services">Services</h5>
+          <a href="services/web-development.html" data-i18n-text="services.webdev">Web Development</a>
+          <a href="services/ai-solutions.html" data-i18n-text="services.ai">AI Solutions</a>
+          <a href="services/automation.html" data-i18n-text="services.automation">Automation</a>
+          <a href="services/custom-software.html" data-i18n-text="services.custom">Custom Software</a>
         </div>
         <div class="footer-links">
-          <h5>Contact Info</h5>
+          <h5 data-i18n-text="footer.contact">Contact Info</h5>
           <a href="mailto:hello@orionsoftsystems.com">hello@orionsoftsystems.com</a>
           <a href="https://wa.me/2348139151102" target="_blank" rel="noopener">WhatsApp: +234 813 915 1102</a>
         </div>
       </div>
-      <div class="footer-bottom"><p>2026 Orion Soft Systems. All rights reserved.</p></div>
+      <div class="footer-bottom">
+        <p data-i18n="footer.rights">2026 Orion Soft Systems. All rights reserved.</p>
+      </div>
     </div>
   </footer>
 
@@ -293,17 +305,32 @@
     </button>
     <div class="chat-window" id="chatWindow">
       <div class="chat-header">
-        <div><h5>Orion Assistant</h5><span class="status">Online</span></div>
+        <div><h5 data-i18n-text="chat.title">Orion Assistant</h5><span class="status" data-i18n-text="chat.status">Online</span></div>
         <button type="button" id="chatClose" style="background:none;border:none;color:var(--text-muted);font-size:1.25rem;cursor:pointer;" aria-label="Close chat">&times;</button>
       </div>
       <div class="chat-messages" id="chatMessages"></div>
       <div class="chat-input">
-        <input type="text" id="chatInput" placeholder="Type a message..." autocomplete="off">
-        <button type="button" id="chatSend">Send</button>
+        <input type="text" id="chatInput" data-i18n-placeholder="chat.placeholder" placeholder="Type a message..." autocomplete="off">
+        <button type="button" id="chatSend" data-i18n-text="chat.send">Send</button>
       </div>
     </div>
   </div>
 
+  <script>
+    (function() {
+      var token = localStorage.getItem("token");
+      var linksEl = document.getElementById("authNavLinks");
+      var ctaEl = document.getElementById("authCta");
+      if (!linksEl || !ctaEl) return;
+      if (token) {
+        linksEl.innerHTML = '<a href="dashboard.html" style="color:var(--accent-blue);">Dashboard</a>';
+        ctaEl.innerHTML = '<button onclick="localStorage.removeItem(\'token\');localStorage.removeItem(\'user\');window.location.href=\'index.html\';" class="btn btn-secondary" style="font-size:0.85rem;padding:0.5rem 1rem;">Sign Out</button>';
+      } else {
+        linksEl.innerHTML = '';
+        ctaEl.innerHTML = '<a href="login.html" class="btn btn-primary" style="font-size:0.85rem;padding:0.5rem 1rem;">Get Started</a>';
+      }
+    })();
+  </script>
   <!-- Scripts -->
   <script src="assets/js/main.js"></script>
   <script src="assets/js/translations.js"></script>

@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const path = require("path");
+const fs = require("fs");
 const cors = require("cors");
 const helmet = require("helmet");
 const morgan = require("morgan");
@@ -11,6 +12,16 @@ require("./db");
 const { query } = require("./db");
 const { generalLimiter } = require("./middleware/rateLimiter");
 const { errorHandler, notFound } = require("./middleware/errorHandler");
+
+// ==================== ENV VALIDATION ====================
+const requiredEnvVars = ["DATABASE_URL", "JWT_SECRET"];
+const missingVars = requiredEnvVars.filter(v => !process.env[v]);
+if (missingVars.length > 0) {
+  console.error("FATAL: Missing required environment variables:");
+  missingVars.forEach(v => console.error("  - " + v));
+  console.error("Copy server/.env.example to server/.env and fill in all values.");
+  process.exit(1);
+}
 
 // Import routes
 const authRoutes = require("./routes/auth");
@@ -93,12 +104,12 @@ app.use("/api/auth", authRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/billing", billingRoutes);
 app.use("/api/translate", translateRoutes);
+app.use("/api/users", require("./routes/users"));
 
 // ==================== SPA FALLBACK ====================
 app.get("*", (req, res, next) => {
   if (req.path.startsWith("/api")) return next();
 
-  const fs = require("fs");
   const filePath = path.join(frontendDir, req.path);
   const exists = fs.existsSync(filePath);
 
