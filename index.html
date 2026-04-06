@@ -7,18 +7,13 @@
   <meta name="keywords" content="AI assistant, web development, automation, custom software, AI solutions, Orion Soft Systems">
   <meta name="author" content="Orion Soft Systems">
   <title>Orion Soft Systems | We Build AI Systems That Help Your Business Grow</title>
-
-  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Main Stylesheet -->
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
 
-  <!-- Page Loader -->
   <div class="page-loader"><div class="loader-spinner"></div></div>
 
   <!-- ==================== NAVBAR ==================== -->
@@ -29,24 +24,25 @@
         Orion Soft Systems
       </a>
       <div class="navbar-menu">
-        <a href="index.html" class="active">Home</a>
-        <a href="about.html">About</a>
-        <a href="services/index.html">Services</a>
-        <a href="products/orion-ai-assistant.html">Products</a>
-        <a href="pricing.html">Pricing</a>
-        <a href="projects.html">Projects</a>
-        <a href="download.html">Download</a>
-        <a href="contact.html">Contact</a>
-        <!-- Auth nav (injected by JS) -->
+        <a href="index.html" class="active" data-i18n-text="nav.home">Home</a>
+        <a href="about.html" data-i18n-text="nav.about">About</a>
+        <a href="services/index.html" data-i18n-text="nav.services">Services</a>
+        <a href="products/orion-ai-assistant.html" data-i18n-text="nav.products">Products</a>
+        <a href="pricing.html" data-i18n-text="nav.pricing">Pricing</a>
+        <a href="projects.html" data-i18n-text="nav.projects">Projects</a>
+        <a href="download.html" data-i18n-text="nav.download">Download</a>
+        <a href="contact.html" data-i18n-text="nav.contact">Contact</a>
         <span id="authNavLinks"></span>
         <!-- Language Switcher -->
         <div class="lang-switcher">
           <button class="lang-switcher-btn" id="langSwitcherBtn" aria-label="Switch language">EN</button>
           <div class="lang-dropdown" id="langDropdown">
-            <button class="lang-option" data-lang="en">English</button>
-            <button class="lang-option" data-lang="fr">Français</button>
-            <button class="lang-option" data-lang="es">Español</button>
-            <button class="lang-option" data-lang="de">Deutsch</button>
+            <button class="lang-option" data-lang="en" data-i18n-text="lang.english">English</button>
+            <button class="lang-option" data-lang="fr" data-i18n-text="lang.french">Français</button>
+            <button class="lang-option" data-lang="es" data-i18n-text="lang.spanish">Español</button>
+            <button class="lang-option" data-lang="ha" data-i18n-text="lang.hausa">Hausa</button>
+            <button class="lang-option" data-lang="yo" data-i18n-text="lang.yoruba">Yorùbá</button>
+            <button class="lang-option" data-lang="de" data-i18n-text="lang.german">Deutsch</button>
           </div>
         </div>
         <span id="authCta"></span>
@@ -62,11 +58,11 @@
     <section class="hero">
       <div class="container">
         <div class="hero-content">
-          <h1 data-i18n="hero_title">We Build <span class="text-gradient">AI Systems</span> That Help Your Business Grow</h1>
-          <p data-i18n="hero_subtitle">Automate customer responses, capture leads, and scale your business with intelligent systems.</p>
+          <h1 data-i18n="hero.title">We Build <span class="text-gradient">AI Systems</span> That Help Your Business Grow</h1>
+          <p data-i18n="hero.subtitle">Automate customer responses, capture leads, and scale your business with intelligent systems.</p>
           <div class="btn-group">
-            <a href="products/orion-ai-assistant.html" class="btn btn-primary" data-i18n="hero_cta_primary">Get Your AI Assistant</a>
-            <a href="contact.html" class="btn btn-secondary" data-i18n="hero_cta_secondary">Book a Demo</a>
+            <a href="products/orion-ai-assistant.html" class="btn btn-primary" data-i18n-text="hero.cta.primary">Get Your AI Assistant</a>
+            <a href="contact.html" class="btn btn-secondary" data-i18n-text="hero.cta.secondary">Book a Demo</a>
           </div>
         </div>
       </div>
@@ -77,16 +73,16 @@
       <div class="container">
         <div class="trust-grid">
           <div class="trust-item">
-            <h3><span class="counter" data-target="50" data-suffix="+" data-i18n="trust_projects">0+</span></h3>
-            <p data-i18n="trust_projects_label">Projects Delivered</p>
+            <h3><span class="counter" data-target="50" data-suffix="+">0+</span></h3>
+            <p data-i18n-text="hero.trust_projects">Projects Delivered</p>
           </div>
           <div class="trust-item">
-            <h3><span class="counter" data-target="100" data-suffix="+" data-i18n="trust_systems">0+</span></h3>
-            <p data-i18n="trust_systems_label">Systems Built</p>
+            <h3><span class="counter" data-target="100" data-suffix="+">0+</span></h3>
+            <p data-i18n-text="hero.trust_systems">Systems Built</p>
           </div>
           <div class="trust-item">
-            <h3><span class="counter" data-target="20" data-suffix="+" data-i18n="trust_tech">0+</span></h3>
-            <p data-i18n="trust_tech_label">Technologies Used</p>
+            <h3><span class="counter" data-target="20" data-suffix="+">0+</span></h3>
+            <p data-i18n-text="hero.trust_tech">Technologies Used</p>
           </div>
         </div>
         <div class="tech-stack">
@@ -103,30 +99,30 @@
     <section class="section fade-in">
       <div class="container">
         <div class="section-header">
-          <h2 data-i18n="ai_product_title">Our AI <span class="text-gradient">Products</span></h2>
-          <p data-i18n="ai_product_subtitle">Intelligent systems designed to work for you around the clock.</p>
+          <h2 data-i18n="product.title">Our AI <span class="text-gradient">Products</span></h2>
+          <p data-i18n="product.desc">Intelligent systems designed to work for you around the clock.</p>
         </div>
         <div class="card" style="max-width: 800px; margin: 0 auto; text-align: center;">
           <div class="feature-icon" style="margin: 0 auto 1.5rem;" aria-hidden="true">&#9733;</div>
-          <h3 data-i18n="orion_ai_name">Orion AI Assistant</h3>
-          <p style="font-size: 1.125rem; max-width: 600px; margin: 0 auto 2rem;" data-i18n="orion_ai_desc">An AI assistant that replies instantly to customers, works 24/7, and helps businesses never miss a lead.</p>
+          <h3 data-i18n-text="product.name">Orion AI Assistant</h3>
+          <p style="font-size: 1.125rem; max-width: 600px; margin: 0 auto 2rem;" data-i18n="product.desc">An AI assistant that replies instantly to customers, works 24/7, and helps businesses never miss a lead.</p>
           <ul style="text-align: left; max-width: 400px; margin: 0 auto 2.5rem; list-style: none;">
             <li style="padding: 0.5rem 0; color: var(--text-secondary); display: flex; align-items: center; gap: 0.75rem;">
-              <span style="color: #10b981; font-weight: bold;" aria-hidden="true">&#10003;</span> <span data-i18n="ai_feature_1">Instant replies</span>
+              <span style="color: #10b981; font-weight: bold;" aria-hidden="true">&#10003;</span> <span data-i18n-text="product.feature.1">Instant replies</span>
             </li>
             <li style="padding: 0.5rem 0; color: var(--text-secondary); display: flex; align-items: center; gap: 0.75rem;">
-              <span style="color: #10b981; font-weight: bold;" aria-hidden="true">&#10003;</span> <span data-i18n="ai_feature_2">WhatsApp + Website integration</span>
+              <span style="color: #10b981; font-weight: bold;" aria-hidden="true">&#10003;</span> <span data-i18n-text="product.feature.2">WhatsApp + Website integration</span>
             </li>
             <li style="padding: 0.5rem 0; color: var(--text-secondary); display: flex; align-items: center; gap: 0.75rem;">
-              <span style="color: #10b981; font-weight: bold;" aria-hidden="true">&#10003;</span> <span data-i18n="ai_feature_3">Lead capture</span>
+              <span style="color: #10b981; font-weight: bold;" aria-hidden="true">&#10003;</span> <span data-i18n-text="product.feature.3">Lead capture</span>
             </li>
             <li style="padding: 0.5rem 0; color: var(--text-secondary); display: flex; align-items: center; gap: 0.75rem;">
-              <span style="color: #10b981; font-weight: bold;" aria-hidden="true">&#10003;</span> <span data-i18n="ai_feature_4">Custom-trained AI</span>
+              <span style="color: #10b981; font-weight: bold;" aria-hidden="true">&#10003;</span> <span data-i18n-text="product.feature.4">Custom-trained AI</span>
             </li>
           </ul>
           <div class="btn-group">
-            <a href="products/orion-ai-assistant.html" class="btn btn-primary" data-i18n="ai_cta_primary">Get Your AI Assistant</a>
-            <a href="contact.html" class="btn btn-secondary" data-i18n="ai_cta_secondary">Request Demo</a>
+            <a href="products/orion-ai-assistant.html" class="btn btn-primary" data-i18n-text="product.cta.primary">Get Your AI Assistant</a>
+            <a href="contact.html" class="btn btn-secondary" data-i18n-text="product.cta.secondary">Request Demo</a>
           </div>
         </div>
       </div>
@@ -136,29 +132,29 @@
     <section class="section fade-in" style="background: var(--bg-secondary);">
       <div class="container">
         <div class="section-header">
-          <h2 data-i18n="services_title">Our <span class="text-gradient">Services</span></h2>
-          <p data-i18n="services_subtitle">From web development to AI-powered automation, we deliver solutions that drive real results.</p>
+          <h2 data-i18n="services.title">Our <span class="text-gradient">Services</span></h2>
+          <p data-i18n="services.subtitle">Intelligent solutions designed to grow your business.</p>
         </div>
         <div class="grid grid-4">
           <a href="services/web-development.html" class="card">
             <div class="feature-icon" aria-hidden="true">&#128187;</div>
-            <h4 data-i18n="service_web_dev">Web Development</h4>
-            <p data-i18n="service_web_dev_desc">Fast, responsive websites and web apps built to convert visitors into customers.</p>
+            <h4 data-i18n-text="services.webdev">Web Development</h4>
+            <p data-i18n-text="services.webdev.desc">Fast, responsive websites and web apps built to convert visitors into customers.</p>
           </a>
           <a href="services/ai-solutions.html" class="card">
             <div class="feature-icon" aria-hidden="true">&#129302;</div>
-            <h4 data-i18n="service_ai_solutions">AI Solutions</h4>
-            <p data-i18n="service_ai_solutions_desc">Custom AI assistants, chatbots, and intelligent automation for your business workflows.</p>
+            <h4 data-i18n-text="services.ai">AI Solutions</h4>
+            <p data-i18n-text="services.ai.desc">Custom AI assistants, chatbots, and intelligent automation for your business workflows.</p>
           </a>
           <a href="services/automation.html" class="card">
             <div class="feature-icon" aria-hidden="true">&#9881;</div>
-            <h4 data-i18n="service_automation">Automation Systems</h4>
-            <p data-i18n="service_automation_desc">Streamline repetitive tasks and free your team to focus on what matters most.</p>
+            <h4 data-i18n-text="services.automation">Automation Systems</h4>
+            <p data-i18n-text="services.automation.desc">Streamline repetitive tasks and free your team to focus on what matters most.</p>
           </a>
           <a href="services/custom-software.html" class="card">
             <div class="feature-icon" aria-hidden="true">&#128736;</div>
-            <h4 data-i18n="service_custom_software">Custom Software</h4>
-            <p data-i18n="service_custom_software_desc">Tailored software solutions built to solve your unique business challenges.</p>
+            <h4 data-i18n-text="services.custom">Custom Software</h4>
+            <p data-i18n-text="services.custom.desc">Tailored software solutions built to solve your unique business challenges.</p>
           </a>
         </div>
       </div>
@@ -168,36 +164,36 @@
     <section class="section fade-in">
       <div class="container">
         <div class="section-header">
-          <h2 data-i18n="why_choose_title">Why Choose <span class="text-gradient">Orion?</span></h2>
-          <p data-i18n="why_choose_subtitle">We do not just write code. We build systems that solve real problems and scale with your business.</p>
+          <h2 data-i18n="why.title">Why Choose <span class="text-gradient">Orion?</span></h2>
+          <p data-i18n="why.subtitle">We don't just write code. We build systems that solve real problems.</p>
         </div>
         <div class="why-grid">
           <div class="why-item">
             <div class="why-icon" aria-hidden="true">&#9889;</div>
             <div>
-              <h4 data-i18n="why_1_title">We Build Systems, Not Just Software</h4>
-              <p data-i18n="why_1_desc">Every solution we deliver is designed to work as a complete system that fits into your business operations.</p>
+              <h4 data-i18n-text="why.1">We build systems, not just software</h4>
+              <p data-i18n="why.1.desc">Every solution we deliver is designed to work as a complete system that fits into your business operations.</p>
             </div>
           </div>
           <div class="why-item">
             <div class="why-icon" aria-hidden="true">&#129504;</div>
             <div>
-              <h4 data-i18n="why_2_title">AI-First Approach</h4>
-              <p data-i18n="why_2_desc">We use artificial intelligence to make your systems smarter, faster, and more capable from day one.</p>
+              <h4 data-i18n-text="why.2">AI-First Approach</h4>
+              <p data-i18n="why.2.desc">We use artificial intelligence to make your systems smarter, faster, and more capable from day one.</p>
             </div>
           </div>
           <div class="why-item">
             <div class="why-icon" aria-hidden="true">&#128200;</div>
             <div>
-              <h4 data-i18n="why_3_title">Scalable Architecture</h4>
-              <p data-i18n="why_3_desc">Our solutions are built to handle growth so you never have to rebuild when your business scales.</p>
+              <h4 data-i18n-text="why.3">Scalable Architecture</h4>
+              <p data-i18n="why.3.desc">Our solutions are built to handle growth so you never have to rebuild when your business scales.</p>
             </div>
           </div>
           <div class="why-item">
             <div class="why-icon" aria-hidden="true">&#127775;</div>
             <div>
-              <h4 data-i18n="why_4_title">Built for Real-World Use</h4>
-              <p data-i18n="why_4_desc">We test everything in real conditions so your systems work reliably when it matters most.</p>
+              <h4 data-i18n-text="why.4">Built for Real-World Use</h4>
+              <p data-i18n="why.4.desc">We test everything in real conditions so your systems work reliably when it matters most.</p>
             </div>
           </div>
         </div>
@@ -208,34 +204,34 @@
     <section class="section fade-in" style="background: var(--bg-secondary);">
       <div class="container">
         <div class="section-header">
-          <h2 data-i18n="projects_title">Recent <span class="text-gradient">Projects</span></h2>
-          <p data-i18n="projects_subtitle">See how we have helped businesses like yours grow with intelligent systems.</p>
+          <h2 data-i18n="projects.title">Recent <span class="text-gradient">Projects</span></h2>
+          <p data-i18n="projects.subtitle">See how we have helped businesses like yours grow with intelligent systems.</p>
         </div>
         <div class="grid grid-3">
           <article class="card project-card">
-            <span class="project-tag" data-i18n="project_1_tag">AI Chatbot</span>
-            <h4 data-i18n="project_1_title">E-Commerce Customer Support Bot</h4>
-            <p><strong data-i18n="project_label_problem">Problem:</strong> <span data-i18n="project_1_problem">A growing online store was missing 40% of customer inquiries outside business hours.</span></p>
-            <p><strong data-i18n="project_label_solution">Solution:</strong> <span data-i18n="project_1_solution">We deployed an AI assistant on WhatsApp and their website that handles inquiries 24/7.</span></p>
-            <p class="result"><strong data-i18n="project_label_result">Result:</strong> <span data-i18n="project_1_result">85% reduction in response time and 30% increase in captured leads.</span></p>
+            <span class="project-tag">AI Chatbot</span>
+            <h4>E-Commerce Customer Support Bot</h4>
+            <p><strong data-i18n-text="project.problem">Problem:</strong> <span data-i18n="project.1.problem">A growing online store was missing 40% of customer inquiries outside business hours.</span></p>
+            <p><strong data-i18n-text="project.solution">Solution:</strong> <span data-i18n="project.1.solution">We deployed an AI assistant on WhatsApp and their website that handles inquiries 24/7.</span></p>
+            <p class="result"><strong data-i18n-text="project.result">Result:</strong> <span data-i18n="project.1.result">85% reduction in response time and 30% increase in captured leads.</span></p>
           </article>
           <article class="card project-card">
-            <span class="project-tag" data-i18n="project_2_tag">Web Platform</span>
-            <h4 data-i18n="project_2_title">Real Estate Lead Management System</h4>
-            <p><strong data-i18n="project_label_problem">Problem:</strong> <span data-i18n="project_2_problem">A property firm struggled to track and follow up with leads from multiple sources.</span></p>
-            <p><strong data-i18n="project_label_solution">Solution:</strong> <span data-i18n="project_2_solution">Built a custom CRM with automated follow-ups, WhatsApp notifications, and analytics.</span></p>
-            <p class="result"><strong data-i18n="project_label_result">Result:</strong> <span data-i18n="project_2_result">2x lead conversion rate within the first 3 months.</span></p>
+            <span class="project-tag">Web Platform</span>
+            <h4>Real Estate Lead Management System</h4>
+            <p><strong data-i18n-text="project.problem">Problem:</strong> <span data-i18n="project.2.problem">A property firm struggled to track and follow up with leads from multiple sources.</span></p>
+            <p><strong data-i18n-text="project.solution">Solution:</strong> <span data-i18n="project.2.solution">Built a custom CRM with automated follow-ups, WhatsApp notifications, and analytics.</span></p>
+            <p class="result"><strong data-i18n-text="project.result">Result:</strong> <span data-i18n="project.2.result">2x lead conversion rate within the first 3 months.</span></p>
           </article>
           <article class="card project-card">
-            <span class="project-tag" data-i18n="project_3_tag">Automation</span>
-            <h4 data-i18n="project_3_title">Invoice Processing Automation</h4>
-            <p><strong data-i18n="project_label_problem">Problem:</strong> <span data-i18n="project_3_problem">A logistics company spent 20+ hours per week on manual invoice data entry.</span></p>
-            <p><strong data-i18n="project_label_solution">Solution:</strong> <span data-i18n="project_3_solution">Implemented an AI-powered system that extracts, validates, and processes invoices automatically.</span></p>
-            <p class="result"><strong data-i18n="project_label_result">Result:</strong> <span data-i18n="project_3_result">90% time saved and near-zero data entry errors.</span></p>
+            <span class="project-tag">Automation</span>
+            <h4>Invoice Processing Automation</h4>
+            <p><strong data-i18n-text="project.problem">Problem:</strong> <span data-i18n="project.3.problem">A logistics company spent 20+ hours per week on manual invoice data entry.</span></p>
+            <p><strong data-i18n-text="project.solution">Solution:</strong> <span data-i18n="project.3.solution">Implemented an AI-powered system that extracts, validates, and processes invoices automatically.</span></p>
+            <p class="result"><strong data-i18n-text="project.result">Result:</strong> <span data-i18n="project.3.result">90% time saved and near-zero data entry errors.</span></p>
           </article>
         </div>
         <div style="text-align: center; margin-top: 3rem;">
-          <a href="projects.html" class="btn btn-secondary" data-i18n="projects_view_all">View All Projects</a>
+          <a href="projects.html" class="btn btn-secondary" data-i18n-text="projects.viewall">View All Projects</a>
         </div>
       </div>
     </section>
@@ -243,11 +239,11 @@
     <!-- ==================== FINAL CTA SECTION ==================== -->
     <section class="cta-section fade-in">
       <div class="container">
-        <h2 data-i18n="cta_title">Let's Build Something That <span class="text-gradient">Works</span></h2>
-        <p style="font-size: 1.125rem; margin-bottom: 2.5rem;" data-i18n="cta_subtitle">Tell us about your project and we will show you how AI can help.</p>
+        <h2 data-i18n="cta.title">Let's Build Something That <span class="text-gradient">Works</span></h2>
+        <p style="font-size: 1.125rem; margin-bottom: 2.5rem;" data-i18n="cta.subtitle">Tell us about your project and we will show you how AI can help.</p>
         <div class="btn-group">
-          <a href="contact.html" class="btn btn-primary" data-i18n="cta_primary">Start a Project</a>
-          <a href="contact.html" class="btn btn-secondary" data-i18n="cta_secondary">Contact Us</a>
+          <a href="contact.html" class="btn btn-primary" data-i18n-text="cta.start">Start a Project</a>
+          <a href="contact.html" class="btn btn-secondary" data-i18n-text="cta.contact">Contact Us</a>
         </div>
       </div>
     </section>
@@ -261,31 +257,31 @@
           <a href="index.html" class="navbar-brand">
             <span class="logo-icon"></span> Orion Soft Systems
           </a>
-          <p data-i18n="footer_tagline">Building Intelligent Systems for a Smarter Future.</p>
+          <p data-i18n="footer.company">Building Intelligent Systems for a Smarter Future.</p>
         </div>
         <div class="footer-links">
-          <h5 data-i18n="footer_quick_links">Quick Links</h5>
-          <a href="about.html" data-i18n="footer_about">About Us</a>
-          <a href="projects.html" data-i18n="footer_projects">Projects</a>
-          <a href="pricing.html" data-i18n="footer_pricing">Pricing</a>
-          <a href="download.html" data-i18n="footer_download">Download MIC</a>
-          <a href="contact.html" data-i18n="footer_contact">Contact</a>
+          <h5 data-i18n-text="footer.quick">Quick Links</h5>
+          <a href="about.html" data-i18n-text="nav.about">About Us</a>
+          <a href="projects.html" data-i18n-text="nav.projects">Projects</a>
+          <a href="pricing.html" data-i18n-text="nav.pricing">Pricing</a>
+          <a href="download.html" data-i18n-text="nav.download">Download MIC</a>
+          <a href="contact.html" data-i18n-text="nav.contact">Contact</a>
         </div>
         <div class="footer-links">
-          <h5 data-i18n="footer_services_title">Services</h5>
-          <a href="services/web-development.html" data-i18n="service_web_dev">Web Development</a>
-          <a href="services/ai-solutions.html" data-i18n="service_ai_solutions">AI Solutions</a>
-          <a href="services/automation.html" data-i18n="service_automation">Automation</a>
-          <a href="services/custom-software.html" data-i18n="service_custom_software">Custom Software</a>
+          <h5 data-i18n-text="footer.services">Services</h5>
+          <a href="services/web-development.html" data-i18n-text="services.webdev">Web Development</a>
+          <a href="services/ai-solutions.html" data-i18n-text="services.ai">AI Solutions</a>
+          <a href="services/automation.html" data-i18n-text="services.automation">Automation</a>
+          <a href="services/custom-software.html" data-i18n-text="services.custom">Custom Software</a>
         </div>
         <div class="footer-links">
-          <h5 data-i18n="footer_contact_info">Contact Info</h5>
+          <h5 data-i18n-text="footer.contact">Contact Info</h5>
           <a href="mailto:hello@orionsoftsystems.com">hello@orionsoftsystems.com</a>
           <a href="https://wa.me/2348139151102" target="_blank" rel="noopener">WhatsApp: +234 813 915 1102</a>
         </div>
       </div>
       <div class="footer-bottom">
-        <p data-i18n="footer_copyright">2026 Orion Soft Systems. All rights reserved.</p>
+        <p data-i18n="footer.rights">2026 Orion Soft Systems. All rights reserved.</p>
       </div>
     </div>
   </footer>
@@ -299,35 +295,19 @@
   </a>
 
   <!-- ==================== CHAT WIDGET ==================== -->
-  <div class="chat-widget" id="chatWidget">
-    <div class="chat-toggle" id="chatToggle" aria-label="Open chat">
-      <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
-      </svg>
-      <span class="chat-badge" style="display: none;" id="chatBadge">1</span>
-    </div>
+  <div class="chat-widget">
+    <button type="button" class="chat-toggle-btn" id="chatToggle" aria-label="Open chat">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+    </button>
     <div class="chat-window" id="chatWindow">
       <div class="chat-header">
-        <div class="chat-header-info">
-          <h5 data-i18n="chat_header">Orion Assistant</h5>
-          <span class="chat-status" data-i18n="chat_status">Online</span>
-        </div>
-        <button class="chat-close" id="chatClose" aria-label="Close chat">&times;</button>
+        <div><h5 data-i18n-text="chat.title">Orion Assistant</h5><span class="status" data-i18n-text="chat.status">Online</span></div>
+        <button type="button" id="chatClose" style="background:none;border:none;color:var(--text-muted);font-size:1.25rem;cursor:pointer;" aria-label="Close chat">&times;</button>
       </div>
-      <div class="chat-messages" id="chatMessages">
-        <div class="chat-message bot">
-          <div class="message-content">
-            <p data-i18n="chat_welcome">Hello! How can I help you today?</p>
-          </div>
-        </div>
-      </div>
-      <div class="chat-input-area">
-        <input type="text" id="chatInput" class="chat-input" data-i18n-placeholder="chat_input_placeholder" placeholder="Type a message..." aria-label="Chat message input">
-        <button id="chatSend" class="chat-send-btn" aria-label="Send message">
-          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-          </svg>
-        </button>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input">
+        <input type="text" id="chatInput" data-i18n-placeholder="chat.placeholder" placeholder="Type a message..." autocomplete="off">
+        <button type="button" id="chatSend" data-i18n-text="chat.send">Send</button>
       </div>
     </div>
   </div>
@@ -343,7 +323,6 @@
       var linksEl = document.getElementById("authNavLinks");
       var ctaEl = document.getElementById("authCta");
       if (!linksEl || !ctaEl) return;
-
       if (token) {
         linksEl.innerHTML = '<a href="dashboard.html" style="color:var(--accent-blue);">Dashboard</a>';
         ctaEl.innerHTML = '<button onclick="localStorage.removeItem(\'token\');localStorage.removeItem(\'user\');window.location.href=\'index.html\';" class="btn btn-secondary" style="font-size:0.85rem;padding:0.5rem 1rem;">Sign Out</button>';
