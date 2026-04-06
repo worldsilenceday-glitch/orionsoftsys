@@ -1,14 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const { body, validationResult } = require("express-validator");
+const jwt = require("jsonwebtoken");
 const billingService = require("../services/billingService");
-const User = require("../models/User");
 
-// Get user ID from token
+// Helper: get user ID from token
 async function getUserIdFromToken(req) {
   const token = req.headers.authorization?.replace("Bearer ", "");
   if (!token) return null;
-  const jwt = require("jsonwebtoken");
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     return decoded.id;
@@ -31,7 +29,8 @@ router.post("/subscribe", async (req, res, next) => {
       return res.status(400).json({ error: "Invalid plan selected", code: "INVALID_PLAN" });
     }
 
-    const user = await User.findById(userId);
+    const UserModel = require("../models/User");
+    const user = await UserModel.findById(userId);
     if (!user) {
       return res.status(404).json({ error: "User not found", code: "USER_NOT_FOUND" });
     }
@@ -42,7 +41,6 @@ router.post("/subscribe", async (req, res, next) => {
       paymentData = await billingService.createStripeCheckout(user, plan);
       res.json({ provider: "stripe", url: paymentData.url, sessionId: paymentData.sessionId });
     } else {
-      // Default to Paystack
       paymentData = await billingService.createPaystackPayment(user, plan);
       res.json({
         provider: "paystack",
@@ -72,16 +70,16 @@ router.post("/verify/paystack", async (req, res, next) => {
     }
 
     const metadata = verification.data.metadata;
-    const userId = metadata.custom_fields?.find(f => f.variable_name === "user_id")?.value 
+    const userId = metadata.custom_fields?.find(f => f.variable_name === "user_id")?.value
                 || metadata.userId;
-    const plan = metadata.custom_fields?.find(f => f.variable_name === "plan")?.value 
+    const plan = metadata.custom_fields?.find(f => f.variable_name === "plan")?.value
               || metadata.plan;
 
     if (!userId || !plan) {
       return res.status(400).json({ error: "Missing payment metadata", code: "MISSING_METADATA" });
     }
 
-    const amount = verification.data.amount; // Already in kobo
+    const amount = verification.data.amount;
     const result = await billingService.activateSubscription(userId, plan, "paystack", reference, amount);
 
     res.json({
@@ -106,7 +104,6 @@ router.post("/webhook/stripe", express.raw({ type: "application/json" }), async 
     return res.status(400).send(`Webhook Error: ${err.message}`);
   }
 
-  // Handle events
   switch (event.type) {
     case "checkout.session.completed": {
       const session = event.data.object;
@@ -119,14 +116,10 @@ router.post("/webhook/stripe", express.raw({ type: "application/json" }), async 
       break;
     }
     case "invoice.payment_failed": {
-      // Handle failed payment - notify user
       console.log("Payment failed for subscription:", event.data.object.subscription);
       break;
     }
     case "customer.subscription.deleted": {
-      // Handle cancelled subscription
-      const subscription = event.data.object;
-      // Update subscription in DB
       break;
     }
   }
@@ -143,7 +136,7 @@ router.get("/subscription", async (req, res, next) => {
     }
 
     const subscription = await billingService.getSubscription(userId);
-    
+
     if (!subscription) {
       return res.json({ active: false, message: "No active subscription" });
     }

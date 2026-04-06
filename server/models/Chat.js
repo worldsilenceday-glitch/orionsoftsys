@@ -1,35 +1,70 @@
-const mongoose = require("mongoose");
+const { query, one, all } = require("../db");
 
-const chatMessageSchema = new mongoose.Schema({
-  role: { type: String, enum: ["user", "assistant", "system"], required: true },
-  content: { type: String, required: true },
-  timestamp: { type: Date, default: Date.now }
-}, { _id: false });
+class ChatModel {
+  static async create(userId) {
+    const res = await query(
+      `INSERT INTO chats (user_id) VALUES ($1) RETURNING *`,
+      [userId]
+    );
+    return this._format(res.rows[0]);
+  }
 
-const chatSchema = new mongoose.Schema({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true, index: true },
-  session: { type: String, default: "default" },
-  messages: [chatMessageSchema],
-  leadCaptured: {
-    name: { type: String, default: "" },
-    email: { type: String, default: "" },
-    phone: { type: String, default: "" }
-  },
-  totalExchanges: { type: Number, default: 0 },
-  lastActiveAt: { type: Date, default: Date.now }
-}, {
-  timestamps: true
-});
+  static async findByUser(userId, limit = 10) {
+    const res = await query(
+      `SELECT * FROM chats WHERE user_id = $1 ORDER BY last_active_at DESC LIMIT $2`,
+      [userId, limit]
+    );
+    return res.rows.map(row => this._format(row));
+  }
 
-// Index for fast lookups
-chatSchema.index({ userId: 1, createdAt: -1 });
+  static async findLatest(userId) {
+    const res = await query(
+      `SELECT * FROM chats WHERE user_id = $1 ORDER BY last_active_at DESC LIMIT 1`,
+      [userId]
+    );
+    return res.rows[0] ? this._format(res.rows[0]) : null;
+  }
 
-// Get recent conversations
-chatSchema.statics.getRecentByUser = function(userId, limit = 10) {
-  return this.find({ userId })
-    .sort({ lastActiveAt: -1 })
-    .limit(limit)
-    .lean();
-};
+  static async addMessages(chatId, userMessage, assistantMessage) {
+    // Fetch current messages
+    const current = await query(
+      `SELECT messages FROM chats WHERE id = $1`,
+      [chatId]
+    );
 
-module.exports = mongoose.model("Chat", chatSchema);
+    const messages = current.rows[0].messages || [];
+    messages.push(userMessage);
+    messages.push(assistantMessage);
+
+    await query(
+      `UPDATE chats SET messages = $1, total_exchanges = total_exchanges + 1, last_active_at = NOW(), updated_at = NOW() WHERE id = $2`,
+      [JSON.stringify(messages), chatId]
+    );
+  }
+
+  static async updateLeadCaptured(chatId, leadData) {
+    await query(
+      `UPDATE chats SET lead_captured = $1, updated_at = NOW() WHERE id = $2`,
+      [JSON.stringify(leadData), chatId]
+    );
+  }
+
+  static async deleteByUser(userId) {
+    await query(`DELETE FROM chats WHERE user_id = $1`, [userId]);
+  }
+
+  static _format(row) {
+    return {
+      id: row.id,
+      userId: row.user_id,
+      session: row.session,
+      messages: row.messages || [],
+      leadCaptured: row.lead_captured || { name: "", email: "", phone: "" },
+      totalExchanges: row.total_exchanges,
+      lastActiveAt: row.last_active_at,
+      createdAt: row.created_at
+    };
+  }
+}
+
+module.exports = ChatModel;

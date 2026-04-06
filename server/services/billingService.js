@@ -1,15 +1,14 @@
 const axios = require("axios");
-const Subscription = require("../models/Subscription");
-const User = require("../models/User");
+const UserModel = require("../models/User");
+const SubscriptionModel = require("../models/Subscription");
 
 // ==================== PAYSTACK ====================
 
-// Initialize Paystack payment
 exports.createPaystackPayment = async (user, plan) => {
   const planPrices = {
-    starter: 29900,       // ₦299/month (in kobo)
-    professional: 59900,  // ₦599/month (in kobo)
-    enterprise: 199900    // ₦1,999/month (in kobo)
+    starter: 29900,
+    professional: 59900,
+    enterprise: 199900
   };
 
   const amount = planPrices[plan] || planPrices.starter;
@@ -22,7 +21,7 @@ exports.createPaystackPayment = async (user, plan) => {
       currency: "NGN",
       callback_url: `${process.env.FRONTEND_URL}/billing/callback`,
       metadata: {
-        userId: user._id.toString(),
+        user_id: user.id.toString(),
         plan: plan,
         custom_fields: [
           { display_name: "User Name", variable_name: "user_name", value: user.name }
@@ -37,10 +36,9 @@ exports.createPaystackPayment = async (user, plan) => {
     }
   );
 
-  return response.data.data; // Contains authorization_url and access_code
+  return response.data.data;
 };
 
-// Verify Paystack payment
 exports.verifyPaystackPayment = async (reference) => {
   const response = await axios.get(
     `https://api.paystack.co/transaction/verify/${reference}`,
@@ -50,7 +48,7 @@ exports.verifyPaystackPayment = async (reference) => {
   );
 
   const data = response.data.data;
-  
+
   if (data.status !== "success") {
     return { success: false, message: "Payment was not successful" };
   }
@@ -60,7 +58,6 @@ exports.verifyPaystackPayment = async (reference) => {
 
 // ==================== STRIPE ====================
 
-// Create Stripe checkout session
 exports.createStripeCheckout = async (user, plan) => {
   const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 
@@ -81,7 +78,7 @@ exports.createStripeCheckout = async (user, plan) => {
     success_url: `${process.env.FRONTEND_URL}/billing/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${process.env.FRONTEND_URL}/pricing?canceled=true`,
     metadata: {
-      userId: user._id.toString(),
+      userId: user.id.toString(),
       plan: plan
     }
   });
@@ -91,14 +88,12 @@ exports.createStripeCheckout = async (user, plan) => {
 
 // ==================== SUBSCRIPTION MANAGEMENT ====================
 
-// Activate subscription after payment
 exports.activateSubscription = async (userId, plan, provider, providerReference, amount) => {
   const now = new Date();
   const periodEnd = new Date(now);
   periodEnd.setMonth(periodEnd.getMonth() + 1);
 
-  // Create subscription record
-  const subscription = await Subscription.create({
+  const subscription = await SubscriptionModel.create({
     userId,
     plan,
     provider,
@@ -118,35 +113,25 @@ exports.activateSubscription = async (userId, plan, provider, providerReference,
     }]
   });
 
-  // Update user plan
-  const user = await User.findByIdAndUpdate(userId, {
-    plan: plan === "starter" ? "starter" : plan === "professional" ? "professional" : "enterprise",
-    subscriptionStatus: "active",
-    planResetsAt: now,
-    messagesThisPeriod: 0
-  }, { new: true });
+  const user = await UserModel.updatePlan(userId, plan, "active");
 
   return { subscription, user };
 };
 
-// Cancel subscription
 exports.cancelSubscription = async (userId) => {
-  const subscription = await Subscription.getActiveByUser(userId);
-  
+  const subscription = await SubscriptionModel.getActive(userId);
+
   if (!subscription) {
     return { success: false, message: "No active subscription found" };
   }
 
-  subscription.cancelAtPeriodEnd = true;
-  subscription.canceledAt = Date.now();
-  await subscription.save();
+  await SubscriptionModel.cancel(subscription.id);
 
   return { success: true, message: "Subscription will end at current period end" };
 };
 
-// Get subscription details
 exports.getSubscription = async (userId) => {
-  const subscription = await Subscription.getActiveByUser(userId);
+  const subscription = await SubscriptionModel.getActive(userId);
   if (!subscription) return null;
 
   return {

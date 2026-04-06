@@ -2,16 +2,18 @@ services:
   - type: web
     name: orion-saas-api
     env: node
-    rootDir: .
     buildCommand: npm install
     startCommand: npm start
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 5000
-      - key: MONGODB_URI
-        sync: false
+      - key: DATABASE_URL
+        fromDatabase:
+          name: orion-db
+          property: connectionString
       - key: JWT_SECRET
         generateValue: true
       - key: OPENAI_API_KEY
@@ -27,3 +29,8 @@ services:
           name: orion-saas-api
           type: web
           envVarKey: RENDER_EXTERNAL_URL
+
+databases:
+  - name: orion-db
+    databaseName: orion_saas
+    plan: free

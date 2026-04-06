@@ -1,9 +1,8 @@
 const express = require("express");
 const router = express.Router();
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { body, validationResult } = require("express-validator");
-const User = require("../models/User");
+const UserModel = require("../models/User");
 const { authLimiter } = require("../middleware/rateLimiter");
 
 // Generate JWT
@@ -26,33 +25,26 @@ router.post("/register", authLimiter, [
     const { name, email, password, businessType, phone } = req.body;
 
     // Check if user exists
-    const existing = await User.findOne({ email });
+    const existing = await UserModel.findByEmail(email);
     if (existing) {
       return res.status(409).json({ error: "Email already registered", code: "EMAIL_EXISTS" });
     }
 
     // Create user with 14-day trial
-    const trialEndsAt = new Date();
-    trialEndsAt.setDate(trialEndsAt.getDate() + 14);
-
-    const user = await User.create({
+    const user = await UserModel.create({
       name,
       email,
       password,
       businessType: businessType || "other",
-      phone: phone || "",
-      plan: "free",
-      subscriptionStatus: "trial",
-      trialEndsAt
+      phone: phone || ""
     });
 
-    // Generate token
-    const token = generateToken(user._id);
+    const token = generateToken(user.id);
 
     res.status(201).json({
       message: "Account created successfully. Your 14-day free trial has started.",
       user: {
-        id: user._id,
+        id: user.id,
         name: user.name,
         email: user.email,
         plan: user.plan,
@@ -78,26 +70,25 @@ router.post("/login", authLimiter, [
 
     const { email, password } = req.body;
 
-    const user = await User.findOne({ email }).select("+password");
+    const user = await UserModel.findByEmail(email);
     if (!user) {
       return res.status(401).json({ error: "No account found with this email", code: "USER_NOT_FOUND" });
     }
 
-    const isValid = await user.comparePassword(password);
+    const isValid = await UserModel.comparePassword(user, password);
     if (!isValid) {
       return res.status(401).json({ error: "Incorrect password", code: "INVALID_PASSWORD" });
     }
 
     // Update last active
-    user.lastActiveAt = Date.now();
-    await user.save();
+    await UserModel.update(user.id, {});
 
-    const token = generateToken(user._id);
+    const token = generateToken(user.id);
 
     res.json({
       message: "Welcome back!",
       user: {
-        id: user._id,
+        id: user.id,
         name: user.name,
         email: user.email,
         plan: user.plan,
@@ -115,29 +106,29 @@ router.post("/login", authLimiter, [
 // ==================== GET PROFILE ====================
 router.get("/profile", async (req, res, next) => {
   try {
-    // Extract token from header (auth handled in route)
     const token = req.headers.authorization?.replace("Bearer ", "");
     if (!token) {
       return res.status(401).json({ error: "Not authenticated", code: "NO_TOKEN" });
     }
 
-    const jwt = require("jsonwebtoken");
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id).select("-password");
+    const user = await UserModel.findById(decoded.id);
 
     if (!user) {
       return res.status(404).json({ error: "User not found", code: "USER_NOT_FOUND" });
     }
 
     // Check if trial expired
-    if (user.subscriptionStatus === "trial" && user.trialEndsAt && new Date() > user.trialEndsAt) {
+    if (user.subscriptionStatus === "trial" && user.trialEndsAt && new Date() > new Date(user.trialEndsAt)) {
+      await UserModel.update(user.id, {});
       user.subscriptionStatus = "expired";
-      await user.save();
     }
+
+    const limits = UserModel.getPlanLimits(user.plan);
 
     res.json({
       user: {
-        id: user._id,
+        id: user.id,
         name: user.name,
         email: user.email,
         plan: user.plan,
@@ -148,7 +139,7 @@ router.get("/profile", async (req, res, next) => {
         aiContext: user.aiContext,
         messagesThisPeriod: user.messagesThisPeriod,
         totalMessagesAllTime: user.totalMessagesAllTime,
-        limits: user.getPlanLimits()
+        limits
       }
     });
   } catch (error) {
@@ -167,39 +158,36 @@ router.put("/profile", async (req, res, next) => {
       return res.status(401).json({ error: "Not authenticated", code: "NO_TOKEN" });
     }
 
-    const jwt = require("jsonwebtoken");
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const user = await User.findById(decoded.id);
+    const user = await UserModel.findById(decoded.id);
 
     if (!user) {
       return res.status(404).json({ error: "User not found", code: "USER_NOT_FOUND" });
     }
 
     // Update allowed fields
-    const allowedFields = ["name", "phone", "businessType", "aiContext"];
-    allowedFields.forEach(field => {
-      if (req.body[field] !== undefined) {
-        user[field] = req.body[field];
-      }
-    });
-
-    // Optional: update password
+    const updates = {};
+    if (req.body.name !== undefined) updates.name = req.body.name;
+    if (req.body.phone !== undefined) updates.phone = req.body.phone;
+    if (req.body.businessType !== undefined) updates.business_type = req.body.businessType;
+    if (req.body.aiContext !== undefined) updates.ai_context = req.body.aiContext;
     if (req.body.password && req.body.password.length >= 6) {
-      user.password = req.body.password; // Hash happens in pre-save hook
+      const bcrypt = require("bcryptjs");
+      updates.password = await bcrypt.hash(req.body.password, 12);
     }
 
-    await user.save();
+    const updated = await UserModel.update(user.id, updates);
 
     res.json({
       message: "Profile updated",
       user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        plan: user.plan,
-        businessType: user.businessType,
-        phone: user.phone,
-        aiContext: user.aiContext
+        id: updated.id,
+        name: updated.name,
+        email: updated.email,
+        plan: updated.plan,
+        businessType: updated.businessType,
+        phone: updated.phone,
+        aiContext: updated.aiContext
       }
     });
   } catch (error) {

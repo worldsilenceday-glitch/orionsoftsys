@@ -1,6 +1,6 @@
 const axios = require("axios");
-const Chat = require("../models/Chat");
-const User = require("../models/User");
+const UserModel = require("../models/User");
+const ChatModel = require("../models/Chat");
 
 // System prompt builder based on user's business
 function buildSystemPrompt(user) {
@@ -48,16 +48,16 @@ RESPONSE GUIDELINES:
 // Extract lead info from user messages
 function extractLeadInfo(message) {
   const lead = {};
-  
+
   const nameMatch = message.match(/(?:my name is|i'm|call me)\s+(\w+)/i);
   if (nameMatch) lead.name = nameMatch[1];
-  
+
   const emailMatch = message.match(/([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/i);
   if (emailMatch) lead.email = emailMatch[1];
-  
+
   const phoneMatch = message.match(/(\+?\d[\d\s\-\(\)]{7,}\d)/);
   if (phoneMatch) lead.phone = phoneMatch[1];
-  
+
   return lead;
 }
 
@@ -104,10 +104,10 @@ async function callDeepSeek(messages, apiKey) {
 // Main chat service
 exports.processChat = async (user, message) => {
   // Check usage limits
-  await user.resetDailyCounter();
-  
-  if (!user.canSendMessage()) {
-    const limits = user.getPlanLimits();
+  await UserModel.resetDailyCounter(user);
+
+  if (!UserModel.canSendMessage(user)) {
+    const limits = UserModel.getPlanLimits(user.plan);
     return {
       reply: `You've reached your daily message limit (${limits.messagesPerDay} messages/day on the ${user.plan} plan). Please upgrade your plan or try again tomorrow.`,
       leadCaptured: null,
@@ -116,23 +116,17 @@ exports.processChat = async (user, message) => {
   }
 
   // Get or create chat session
-  let chatSession = await Chat.findOne({ userId: user._id }).sort({ lastActiveAt: -1 });
-  
+  let chatSession = await ChatModel.findLatest(user.id);
+
   if (!chatSession) {
-    chatSession = await Chat.create({
-      userId: user._id,
-      messages: []
-    });
+    chatSession = await ChatModel.create(user.id);
   }
 
   // Build message history for AI
   const systemMessage = { role: "system", content: buildSystemPrompt(user) };
-  
+
   // Get last 10 messages for context
-  const recentMessages = chatSession.messages.slice(-10).map(m => ({
-    role: m.role,
-    content: m.content
-  }));
+  const recentMessages = chatSession.messages.slice(-10);
 
   const apiMessages = [systemMessage, ...recentMessages, { role: "user", content: message }];
 
@@ -153,41 +147,35 @@ exports.processChat = async (user, message) => {
   // Extract lead info
   const leadInfo = extractLeadInfo(message);
   if (leadInfo.name || leadInfo.email) {
-    chatSession.leadCaptured = {
-      ...chatSession.leadCaptured,
-      ...leadInfo
-    };
+    const updatedLead = { ...chatSession.leadCaptured, ...leadInfo };
+    await ChatModel.updateLeadCaptured(chatSession.id, updatedLead);
+    chatSession.leadCaptured = updatedLead;
   }
 
   // Save messages
-  chatSession.messages.push(
-    { role: "user", content: message },
-    { role: "assistant", content: reply }
-  );
-  chatSession.totalExchanges += 1;
-  chatSession.lastActiveAt = Date.now();
-  await chatSession.save();
+  const userMsg = { role: "user", content: message, timestamp: new Date().toISOString() };
+  const assistantMsg = { role: "assistant", content: reply, timestamp: new Date().toISOString() };
+  await ChatModel.addMessages(chatSession.id, userMsg, assistantMsg);
 
   // Update user counters
-  user.messagesThisPeriod += 1;
-  user.totalMessagesAllTime += 1;
-  user.lastActiveAt = Date.now();
-  await user.save();
+  await UserModel.incrementMessageCount(user.id);
 
-  const limits = user.getPlanLimits();
+  const limits = UserModel.getPlanLimits(user.plan);
+  // Re-fetch user to get updated count
+  const updatedUser = await UserModel.findById(user.id);
 
   return {
     reply,
     leadCaptured: chatSession.leadCaptured,
     usage: {
-      messagesThisPeriod: user.messagesThisPeriod,
+      messagesThisPeriod: updatedUser.messagesThisPeriod,
       limit: limits.messagesPerDay,
-      remaining: limits.messagesPerDay === -1 ? "unlimited" : limits.messagesPerDay - user.messagesThisPeriod
+      remaining: limits.messagesPerDay === -1 ? "unlimited" : limits.messagesPerDay - updatedUser.messagesThisPeriod
     }
   };
 };
 
 // Get chat history for user
 exports.getChatHistory = async (userId, limit = 10) => {
-  return Chat.getRecentByUser(userId, limit);
+  return ChatModel.findByUser(userId, limit);
 };

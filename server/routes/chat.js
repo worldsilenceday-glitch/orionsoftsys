@@ -1,29 +1,28 @@
 const express = require("express");
 const router = express.Router();
-const { body, validationResult } = require("express-validator");
 const { chatLimiter } = require("../middleware/rateLimiter");
 const { processChat, getChatHistory } = require("../services/aiService");
+const jwt = require("jsonwebtoken");
+
+// Helper: get user from token
+async function getUserFromToken(req) {
+  const token = req.headers.authorization?.replace("Bearer ", "");
+  if (!token) return null;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const UserModel = require("../models/User");
+    return await UserModel.findById(decoded.id);
+  } catch (err) {
+    return null;
+  }
+}
 
 // ==================== SEND MESSAGE ====================
 router.post("/", chatLimiter, async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.replace("Bearer ", "");
-    if (!token) {
-      return res.status(401).json({ error: "Authentication required", code: "NO_TOKEN" });
-    }
-
-    const jwt = require("jsonwebtoken");
-    let decoded;
-    try {
-      decoded = jwt.verify(token, process.env.JWT_SECRET);
-    } catch (err) {
-      return res.status(401).json({ error: "Invalid token", code: "INVALID_TOKEN" });
-    }
-
-    const User = require("../models/User");
-    const user = await User.findById(decoded.id);
+    const user = await getUserFromToken(req);
     if (!user) {
-      return res.status(404).json({ error: "User not found", code: "USER_NOT_FOUND" });
+      return res.status(401).json({ error: "Authentication required", code: "NO_TOKEN" });
     }
 
     const { message } = req.body;
@@ -46,16 +45,13 @@ router.post("/", chatLimiter, async (req, res, next) => {
 // ==================== GET CHAT HISTORY ====================
 router.get("/history", async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.replace("Bearer ", "");
-    if (!token) {
+    const user = await getUserFromToken(req);
+    if (!user) {
       return res.status(401).json({ error: "Authentication required", code: "NO_TOKEN" });
     }
 
-    const jwt = require("jsonwebtoken");
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
     const limit = parseInt(req.query.limit) || 10;
-    const history = await getChatHistory(decoded.id, limit);
+    const history = await getChatHistory(user.id, limit);
 
     res.json({ conversations: history });
   } catch (error) {
@@ -66,16 +62,13 @@ router.get("/history", async (req, res, next) => {
 // ==================== CLEAR CHAT HISTORY ====================
 router.delete("/history", async (req, res, next) => {
   try {
-    const token = req.headers.authorization?.replace("Bearer ", "");
-    if (!token) {
+    const user = await getUserFromToken(req);
+    if (!user) {
       return res.status(401).json({ error: "Authentication required", code: "NO_TOKEN" });
     }
 
-    const jwt = require("jsonwebtoken");
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    const Chat = require("../models/Chat");
-    await Chat.deleteMany({ userId: decoded.id });
+    const ChatModel = require("../models/Chat");
+    await ChatModel.deleteByUser(user.id);
 
     res.json({ message: "Chat history cleared" });
   } catch (error) {
