@@ -1,16 +1,16 @@
 # ============================================================
 # GitHub Actions — Deploy to cPanel (orionsoftsystems.com.ng)
 # Triggers on every push to the `main` branch.
-# Uses SSH + rsync to push files to cPanel, then restarts the
-# Node.js process with PM2.
+# Uses SSH + rsync to push files to cPanel, then performs a
+# zero-downtime rolling reload of the Node.js app via PM2.
 #
 # Required GitHub Secrets (Settings → Secrets → Actions):
-#   CPANEL_SSH_HOST         – server hostname / IP
-#   CPANEL_SSH_PORT         – SSH port (default 22; cPanel often uses 2222)
-#   CPANEL_SSH_USERNAME     – cPanel account username
-#   CPANEL_SSH_PRIVATE_KEY  – contents of ~/.ssh/id_rsa (private key)
-#   DEPLOY_PATH             – absolute path on server, e.g. /home/username/orionsoftsystems.com.ng
-#   ENV_FILE                – full contents of your production .env file
+#   HOST         – server hostname / IP
+#   SSH_PORT     – SSH port (default 22; cPanel often uses 2222)
+#   USERNAME     – cPanel account username
+#   SSH_KEY      – contents of ~/.ssh/id_rsa (private key, PEM format)
+#   DEPLOY_PATH  – absolute path on server, e.g. /home/username/orionsoftsystems.com.ng
+#   ENV_FILE     – full contents of your production .env file (multi-line secret)
 # ============================================================
 
 name: Deploy to cPanel
@@ -95,21 +95,22 @@ jobs:
             --exclude='render.yaml'
           path: ./
           remote_path: ${{ secrets.DEPLOY_PATH }}
-          remote_host: ${{ secrets.CPANEL_SSH_HOST }}
-          remote_port: ${{ secrets.CPANEL_SSH_PORT }}
-          remote_user: ${{ secrets.CPANEL_SSH_USERNAME }}
-          remote_key: ${{ secrets.CPANEL_SSH_PRIVATE_KEY }}
+          remote_host: ${{ secrets.HOST }}
+          remote_port: ${{ secrets.SSH_PORT }}
+          remote_user: ${{ secrets.USERNAME }}
+          remote_key: ${{ secrets.SSH_KEY }}
 
-      # SSH into the server, install dependencies, and (re)start via PM2.
-      - name: Install server deps and restart app with PM2
+      # SSH into the server, install dependencies, and perform a
+      # zero-downtime rolling reload via PM2 cluster mode.
+      - name: Install server deps and reload app with PM2 (zero-downtime)
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.CPANEL_SSH_HOST }}
-          username: ${{ secrets.CPANEL_SSH_USERNAME }}
-          key: ${{ secrets.CPANEL_SSH_PRIVATE_KEY }}
-          port: ${{ secrets.CPANEL_SSH_PORT }}
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.SSH_PORT }}
           script: |
-            set -e
+            set -euo pipefail
 
             echo "📂 Entering deploy directory..."
             cd "${{ secrets.DEPLOY_PATH }}"
@@ -117,10 +118,13 @@ jobs:
             echo "📦 Installing production Node.js dependencies..."
             npm ci --omit=dev --prefer-offline
 
-            echo "🔄 Restarting application with PM2..."
+            echo "🔄 Performing zero-downtime reload with PM2..."
             if pm2 list | grep -q "orion-saas"; then
-              pm2 restart orion-saas --update-env
+              # reload sends SIGINT to old workers one at a time, waits for
+              # new workers to be ready, then kills old ones — zero downtime
+              pm2 reload orion-saas --update-env
             else
+              echo "⚠️  App not found in PM2 — starting fresh..."
               pm2 start ecosystem.config.js --env production
             fi
 
@@ -130,3 +134,22 @@ jobs:
             echo "✅ Deployment complete!"
             echo "🌐 Live at: https://orionsoftsystems.com.ng"
             echo "🔌 Health:  https://orionsoftsystems.com.ng/api/health"
+
+      # Verify the app is responding after deploy.
+      # Retries up to 5 times with a 10-second back-off before failing.
+      - name: Health check
+        run: |
+          echo "⏳ Waiting for app to become healthy..."
+          for i in $(seq 1 5); do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+              --max-time 10 \
+              https://orionsoftsystems.com.ng/api/health || echo "000")
+            echo "  Attempt $i: HTTP $STATUS"
+            if [ "$STATUS" = "200" ]; then
+              echo "✅ Health check passed!"
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "❌ Health check failed after 5 attempts"
+          exit 1
