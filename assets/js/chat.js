@@ -125,7 +125,7 @@
       this.isTyping = true;
 
       try {
-        const response = await fetch(`${CONFIG.apiUrl}/chat`, {
+        const response = await fetch(`${CONFIG.apiUrl}/ai-chat`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

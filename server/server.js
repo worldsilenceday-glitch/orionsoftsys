@@ -102,6 +102,7 @@ app.get("/api/test-db", async (req, res) => {
 
 app.use("/api/auth", authRoutes);
 app.use("/api/chat", chatRoutes);
+app.use("/api/ai-chat", require("./routes/ai-chat"));
 app.use("/api/billing", billingRoutes);
 app.use("/api/translate", translateRoutes);
 app.use("/api/users", require("./routes/users"));

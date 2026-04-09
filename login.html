@@ -221,6 +221,25 @@
       window.location.href = "dashboard.html";
     }
   </script>
+  <!-- ==================== CHAT WIDGET ==================== -->
+  <div class="chat-widget">
+    <button type="button" class="chat-toggle-btn" id="chatToggle" aria-label="Open chat">
+      <svg viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+    </button>
+    <div class="chat-window" id="chatWindow">
+      <div class="chat-header">
+        <div><h5 data-i18n-text="chat.title">Orion Assistant</h5><span class="status" data-i18n-text="chat.status">Online</span></div>
+        <button type="button" id="chatClose" style="background:none;border:none;color:var(--text-muted);font-size:1.25rem;cursor:pointer;" aria-label="Close chat">&times;</button>
+      </div>
+      <div class="chat-messages" id="chatMessages"></div>
+      <div class="chat-input">
+        <input type="text" id="chatInput" data-i18n-placeholder="chat.placeholder" placeholder="Type a message..." autocomplete="off">
+        <button type="button" id="chatSend" data-i18n-text="chat.send">Send</button>
+      </div>
+    </div>
+  </div>
+
   <script src="assets/js/translations.js"></script>
+  <script src="assets/js/chat.js"></script>
 </body>
 </html>
